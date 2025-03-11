@@ -1,0 +1,109 @@
+---
+# For detailed instructions on using this file, visit:
+# https://github.com/Azure/ALZ-PowerShell-Module/wiki/%5BUser-Guide%5D-Quick-Start-Phase-2-Local#2232-local-file-system-with-terraform
+
+# Basic Inputs
+iac: "terraform"
+bootstrap: "alz_local"
+starter: "sovereign_landing_zone"
+
+# Shared Interface Inputs
+bootstrap_location: "westeurope"
+starter_locations: ["westeurope"]  # NOTE: SLZ only support a single region by design
+root_parent_management_group_id: "711b8fff-9db3-42cc-bc27-7a19ced91f39"
+subscription_id_management: "60f2c389-1048-4665-b1e4-913031c7c344"
+subscription_id_identity: "54c0c074-bd4f-41a8-ab60-a75044ca3470"
+subscription_id_connectivity: "47ff1d15-9913-451e-959f-c27aed3ab072"
+
+# Bootstrap Inputs
+target_directory: "../accelerator/output"
+create_bootstrap_resources_in_azure: true
+bootstrap_subscription_id: "60f2c389-1048-4665-b1e4-913031c7c344"
+service_name: "alz"
+environment_name: "mgmt"
+postfix_number: 1
+architecture_definition_name: "null"
+apply_alz_archetypes_via_architecture_definition_template: true
+
+# Sovereign Landing Zone Starter Module Specific Variables
+# (Details: https://github.com/Azure/ALZ-PowerShell-Module/wiki/%5BUser-Guide%5D-Starter-Module-Terraform-Sovereign-Landing-Zone)
+allowed_locations: [westeurope]
+allowed_locations_for_confidential_computing: [westeurope]
+az_firewall_policies_enabled: true
+bastion_outbound_ssh_rdp_ports: ["22", "3389"]
+custom_subnets: {
+  AzureBastionSubnet: {
+    address_prefixes: "10.255.1.0/24",
+    name: "AzureBastionSubnet",
+    networkSecurityGroupId: "",
+    routeTableId: ""
+  },
+  AzureFirewallSubnet: {
+    address_prefixes: "10.255.0.64/26",
+    name: "AzureFirewallSubnet",
+    networkSecurityGroupId: "",
+    routeTableId: ""
+  },
+  GatewaySubnet: {
+    address_prefixes: "10.255.0.128/26",
+    name: "GatewaySubnet",
+    networkSecurityGroupId: "",
+    routeTableId: ""
+  }
+}
+customer: "ecg"
+customer_policy_sets: {}
+default_postfix: "01"
+default_prefix: "ecg"
+deploy_bastion: true
+deploy_ddos_protection: true
+deploy_hub_network: true
+deploy_log_analytics_workspace: true
+enable_firewall: true
+enable_telemetry: false
+express_route_gateway_config: {name: "noconfigEr"}
+hub_network_address_prefix: "10.255.0.0/16"
+landing_zone_management_group_children: {
+  child1: {
+    id: "ecg-corp",
+    displayName: "ecg-corp"
+  }, 
+  child2: {
+    id: "ecg-online",
+    displayName: "ecg-online"
+  }
+}
+log_analytics_workspace_retention_in_days: "180"
+ms_defender_for_cloud_email_security_contact: "infinion@ecggh.com"
+policy_assignment_enforcement_mode: "Default"
+policy_effect: "Deny"
+policy_exemptions: {}
+subscription_billing_scope: ""
+tags: {
+  Environment: "Production",
+  ServiceName: "Mgmt",
+  CostCenter: "Ecg"
+}
+top_level_management_group_name: "Sovereign Landing Zone"
+use_premium_firewall: true
+vpn_gateway_config: {
+  name: "vpn_gateway",
+  gatewayType: "Vpn",
+  sku: "VpnGw2AZ",
+  vpnType: "RouteBased",
+  vpnGatewayGeneration: "Generation1",
+  enableBgp: false,
+  activeActive: false,
+  enableBgpRouteTranslationForNat: false,
+  enableDnsForwarding: false,
+  bgpPeeringAddress: "",
+  asn: 65515,
+  peerWeight: 5,
+  vpnClientConfiguration: {
+    vpnAddressSpace: ""
+   }
+  }
+
+# Advanced Inputs
+bootstrap_module_version: "v4.1.8"
+starter_module_version: "latest"
